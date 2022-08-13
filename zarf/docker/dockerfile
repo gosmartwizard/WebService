@@ -4,10 +4,10 @@ ENV CGO_ENABLED 0
 ARG BUILD_REF
 
 # Copy the source code into the container.
-COPY . /webservice
+COPY . /WebService
 
 # Build the service binary.
-WORKDIR /webservice
+WORKDIR /WebService
 RUN go build -ldflags "-X main.build=${BUILD_REF}"
 
 
@@ -15,9 +15,9 @@ RUN go build -ldflags "-X main.build=${BUILD_REF}"
 FROM alpine:3.14
 ARG BUILD_DATE
 ARG BUILD_REF
-COPY --from=build_sales-api /webservice /webservice/webservice
-WORKDIR /webservice
-CMD ["./webservice"]
+COPY --from=build_sales-api /WebService/WebService /WebService/WebService
+WORKDIR /WebService
+CMD ["./WebService"]
 
 LABEL org.opencontainers.image.created="${BUILD_DATE}" \
       org.opencontainers.image.title="sales-api" \
