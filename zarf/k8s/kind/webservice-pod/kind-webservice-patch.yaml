@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: webservice-pod
+  namespace: webservice-system
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: webservice
+  template:
+    metadata:
+      labels:
+        app: webservice
+    spec:
+      containers:
+      # webservice-api container configuration
+      - name: webservice-api
+        resources:
+          limits:
+            cpu: "2000m" # Up to 2 full cores
+          requests:
+            cpu: "1000m" # Use 1 full cores

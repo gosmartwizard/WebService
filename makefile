@@ -37,7 +37,7 @@ kind-load:
 	kind load docker-image webservice-amd64:$(VERSION) --name $(KIND_CLUSTER)
 
 kind-apply:
-	cat zarf/k8s/base/service-pod/base-webservice.yaml | kubectl apply -f -
+	kustomize build zarf/k8s/kind/webservice-pod | kubectl apply -f -
 
 kind-status:
 	kubectl get nodes -o wide
@@ -55,5 +55,14 @@ kind-restart:
 
 kind-update: all kind-load kind-restart
 
+kind-update-apply: all kind-load kind-apply
+
 kind-describe:
 	kubectl describe pod -l app=webservice
+
+# ==============================================================================
+# Modules support
+
+tidy:
+	go mod tidy
+	go mod vendor
