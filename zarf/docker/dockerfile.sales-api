@@ -6,6 +6,10 @@ ARG BUILD_REF
 # Copy the source code into the container.
 COPY . /WebService
 
+# Build the admin binary.
+WORKDIR /WebService/app/tooling/admin
+RUN go build -ldflags "-X main.build=${BUILD_REF}"
+
 # Build the service binary.
 WORKDIR /WebService/app/services/sales-api
 RUN go build -ldflags "-X main.build=${BUILD_REF}"
@@ -16,6 +20,7 @@ FROM alpine:3.16
 ARG BUILD_DATE
 ARG BUILD_REF
 COPY --from=build_sales-api /WebService/zarf/keys/. /WebService/zarf/keys/.
+COPY --from=build_sales-api /WebService/app/tooling/admin/admin /WebService/admin
 COPY --from=build_sales-api /WebService/app/services/sales-api/sales-api /WebService/sales-api
 WORKDIR /WebService
 CMD ["./sales-api"]
