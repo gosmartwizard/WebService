@@ -76,7 +76,7 @@ kind-status:
 	kubectl get pods -o wide --watch --all-namespaces
 
 kind-status-sales:
-	kubectl get pods -o wide --watch
+	kubectl get pods -o wide --watch --namespace=sales-system
 
 kind-status-db:
 	kubectl get pods -o wide --watch --namespace=database-system
