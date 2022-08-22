@@ -13,6 +13,7 @@ import (
 	"time"
 
 	"github.com/gosmartwizard/WebService/business/data/schema"
+	"github.com/gosmartwizard/WebService/business/data/store/user"
 	"github.com/gosmartwizard/WebService/business/sys/auth"
 	"github.com/gosmartwizard/WebService/business/sys/database"
 	"github.com/gosmartwizard/WebService/foundation/docker"
@@ -135,6 +136,24 @@ func NewIntegration(t *testing.T, dbc DBContainer) *Test {
 	}
 
 	return &test
+}
+
+// Token generates an authenticated token for a user.
+func (test *Test) Token(email, pass string) string {
+	test.t.Log("Generating token for test ...")
+
+	store := user.NewStore(test.Log, test.DB)
+	claims, err := store.Authenticate(context.Background(), time.Now(), email, pass)
+	if err != nil {
+		test.t.Fatal(err)
+	}
+
+	token, err := test.Auth.GenerateToken(claims)
+	if err != nil {
+		test.t.Fatal(err)
+	}
+
+	return token
 }
 
 // StringPointer is a helper to get a *string from a string. It is in the tests
