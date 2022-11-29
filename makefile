@@ -49,7 +49,7 @@ sales-api:
 # ==============================================================================
 # Running from within k8s/kind
 
-KIND_CLUSTER := ardan-starter-cluster
+KIND_CLUSTER := rk-starter-cluster
 
 kind-up:
 	kind create cluster \
