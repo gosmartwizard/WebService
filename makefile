@@ -57,7 +57,7 @@ sales-api:
 # ==============================================================================
 # Running from within k8s/kind
 
-KIND_CLUSTER := ardan-starter-cluster
+KIND_CLUSTER := rk-starter-cluster
 
 kind-up:
 	kind create cluster \
@@ -105,6 +105,25 @@ kind-describe:
 # ==============================================================================
 # Modules support
 
+deps-reset:
+	git checkout -- go.mod
+	go mod tidy
+	go mod vendor
+
 tidy:
 	go mod tidy
 	go mod vendor
+
+deps-list:
+	go list -m -u -mod=readonly all
+
+deps-upgrade:
+	go get -u -v ./...
+	go mod tidy
+	go mod vendor
+
+deps-cleancache:
+	go clean -modcache
+
+list:
+	go list -mod=mod all
